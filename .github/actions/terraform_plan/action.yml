@@ -62,14 +62,14 @@ runs:
       id: terraform_plan
       shell: bash
       run: >
-        terraform
+        PLAN=$(terraform
         ${{ inputs.working-directory != '.' && format('-chdir={0}', inputs.working-directory) || '' }}
         plan -input=false
         ${{ inputs.compact-warnings == 'true' && '-compact-warnings' || '' }}
         ${{ inputs.detailed-exitcode == 'true' && '-detailed-exitcode' || '' }}
         ${{ inputs.no-color == 'true' && '-no-color' || '' }}
         ${{ inputs.output-file != '' && format('-out={0}', inputs.output-file) || '' }}
-        -parallelism=${{ inputs.parallelism }}
+        -parallelism=${{ inputs.parallelism }}) >> $GITHUB_OUTPUT
 
     - name: JSON Artifact
       id: json_artifact
@@ -78,27 +78,16 @@ runs:
       run: |
         terraform show -json tfplan > ${{ inputs.output-file }}.json
 
-    - name: Plan Output
-      id: plan_output
+    - name: GH Login
+      id: gh_login
       shell: bash
-      run: |
-        PLAN=$(terraform show tfplan) >> $GITHUB_OUTPUT
+      run: gh auth login --with-token <<< ${{ inputs.github_token }}
 
     - name: Plan Comment
       id: plan_comment
       if: inputs.pr-id != 'false' && inputs.output-file != ''
-      uses: peter-evans/create-or-update-comment@v4
-      with:
-        token: ${{ inputs.github_token}}
-        issue-number: ${{ inputs.pr-id }}
-        body: |
-          # Terraform Plan
-
-          ## Pull Request ID: ${{ inputs.pr-id }}
-
-          ```bash
-          ${{ steps.plan_output.outputs.PLAN }}
-          ```
-
-          Plan saved to GH artifacts as [${{ inputs.output-file }}]
+      shell: bash
+      run: |
+        BODY="${{ steps.terraform_plan.outputs.PLAN }}"
+        gh pr comment ${{ inputs.pr-id }} --body "$BODY"
 ...
