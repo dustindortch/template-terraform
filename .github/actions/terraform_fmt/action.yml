@@ -41,7 +41,7 @@ runs:
       shell: bash
       run: >
         terraform
-        ${{ inputs.working-directory != '.' && join(fromJSON(['-chdir=',inputs.working-directory])) }}
+        ${{ inputs.working-directory != '.' && join(fromJSON('["-chdir=","' inputs.working-directory '"]')) }}
         fmt
         ${{ inputs.check == 'true' && '-check' }}
         ${{ inputs.diff == 'true' && '-diff' }}
