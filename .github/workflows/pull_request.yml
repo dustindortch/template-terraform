@@ -36,6 +36,10 @@ jobs:
         id: terraform_fmt
         uses: dustindortch/terraform-rootmodule-template/.github/actions/terraform_fmt@main
 
+      - name: Terraform Validate
+        id: terraform_validate
+        uses: dustindortch/terraform-rootmodule-template/.github/actions/terraform_validate@main
+
       - name: Terraform Version
         id: terraform_version
         shell: bash
