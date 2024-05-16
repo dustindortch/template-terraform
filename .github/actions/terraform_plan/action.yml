@@ -68,7 +68,7 @@ runs:
         ${{ inputs.compact-warnings == 'true' && '-compact-warnings' || '' }}
         ${{ inputs.detailed-exitcode == 'true' && '-detailed-exitcode' || '' }}
         ${{ inputs.no-color == 'true' && '-no-color' || '' }}
-        ${{ inputs.output-file != '' && format('-output-file={0}', inputs.output-file) || '' }}
+        ${{ inputs.output-file != '' && format('-out={0}', inputs.output-file) || '' }}
         -parallelism=${{ inputs.parallelism }}
 
     - name: JSON Artifact
