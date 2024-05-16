@@ -71,12 +71,10 @@ runs:
       shell: bash
       run: >
         terraform
-        -input=false
         ${{ inputs.working-directory != '.' && join(fromJSON(format('["-chdir=","{0}"]', inputs.working-directory))) || '' }}
-        plan
+        plan -input=false
         ${{ inputs.compact-warnings == 'true' && '-compact-warnings' || '' }}
         ${{ inputs.detailed-exitcode == 'true' && '-detailed-exitcode' || '' }}
-        ${{ inputs.json == 'true' && '-json' || '' }}
         ${{ inputs.no-color == 'true' && '-no-color' || '' }}
         ${{ inputs.no-tests == 'true' && '-no-tests' || '' }}
         ${{ inputs.output-file != '' && format('-output-file={0}', inputs.output-file) || '' }}
