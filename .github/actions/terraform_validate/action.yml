@@ -38,5 +38,5 @@ runs:
         ${{ inputs.json == 'true' && '-json' || '' }}
         ${{ inputs.no-color == 'true' && '-no-color' || '' }}
         ${{ inputs.no-tests == 'true' && '-no-tests' || '' }}
-        ${{ inputs.test-directory != '.' && join(fromJSON(format('["-test-directory=","{0}"]', inputs.test-directory))) || '' }}
+        ${{ (inputs.test-directory != '' && inputs.no-tests == 'true') && join(fromJSON(format('["-test-directory={0}"]', inputs.test-directory))) || '' }}
 ...
