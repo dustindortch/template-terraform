@@ -24,7 +24,7 @@ runs:
       shell: bash
       run: |
         TFENV_VERSION=$(tfenv --version | awk 'BEGIN { FS = " " } ; { print $2}')
-        echo "TFENV_VERSION: ${TFENV_VERSION}" >> $GITHUB_ENV
+        echo "TFENV_VERSION=${TFENV_VERSION}" >> $GITHUB_ENV
 
     - name: Terraform Install
       id: terraform_install
