@@ -32,6 +32,10 @@ jobs:
         id: terraform_install
         uses: dustindortch/terraform-rootmodule-template/.github/actions/terraform_install@main
 
+      - name: Terraform Format
+        id: terraform_fmt
+        uses: dustindortch/terraform-rootmodule-template/.github/actions/terraform_fmt@main
+
       - name: Terraform Version
         id: terraform_version
         shell: bash
