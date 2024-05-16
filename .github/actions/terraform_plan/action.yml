@@ -79,9 +79,9 @@ runs:
         ${{ inputs.json == 'true' && '-json' || '' }}
         ${{ inputs.no-color == 'true' && '-no-color' || '' }}
         ${{ inputs.no-tests == 'true' && '-no-tests' || '' }}
-        ${{ (inputs.output-file != '' && join(fromJSON(format('["-output-file={0}"]', inputs.output-file))) || '' }}
+        ${{ inputs.output-file != '' && format('-output-file={0}', inputs.output-file) || '' }}
         -parallelism=${{ inputs.parallelism }}
-        ${{ (inputs.test-directory != '' && inputs.no-tests == 'true') && join(fromJSON(format('["-test-directory={0}"]', inputs.test-directory))) || '' }}
+        ${{ (inputs.test-directory != '' && inputs.no-tests == 'true') && format('-test-directory={0}', inputs.test-directory) || '' }}
 
     - name: JSON Artifact
       id: json_artifact
