@@ -30,10 +30,6 @@ inputs:
     default: 'true'
     description: 'Disables color in output'
     required: false
-  no-tests:
-    default: 'true'
-    description: 'Terraform will not validate test files'
-    required: false
   output-file:
     default: ''
     description: 'Write the generated execution plan to the given file. This can be used as an input to the "apply" command.'
@@ -54,10 +50,6 @@ inputs:
     default: 'false'
     description: 'Select the "refresh only" planning mode, which checks whether remote objects still match the outcome of the most recent Terraform apply but does not propose any actions to undo any changes made outside of Terraform.'
     required: false
-  test-directory:
-    default: 'tests'
-    description: 'Set the Terraform test directory, defaults to "tests".'
-    required: false
   working-directory:
     default: '.'
     description: 'The directory to run Terraform commands in'
@@ -71,15 +63,13 @@ runs:
       shell: bash
       run: >
         terraform
-        ${{ inputs.working-directory != '.' && join(fromJSON(format('["-chdir=","{0}"]', inputs.working-directory))) || '' }}
+        ${{ inputs.working-directory != '.' && format('-chdir={0}', inputs.working-directory) || '' }}
         plan -input=false
         ${{ inputs.compact-warnings == 'true' && '-compact-warnings' || '' }}
         ${{ inputs.detailed-exitcode == 'true' && '-detailed-exitcode' || '' }}
         ${{ inputs.no-color == 'true' && '-no-color' || '' }}
-        ${{ inputs.no-tests == 'true' && '-no-tests' || '' }}
         ${{ inputs.output-file != '' && format('-output-file={0}', inputs.output-file) || '' }}
         -parallelism=${{ inputs.parallelism }}
-        ${{ (inputs.test-directory != '' && inputs.no-tests == 'true') && format('-test-directory={0}', inputs.test-directory) || '' }}
 
     - name: JSON Artifact
       id: json_artifact

@@ -33,10 +33,10 @@ runs:
       shell: bash
       run: >
         terraform
-        ${{ inputs.working-directory != '.' && join(fromJSON(format('["-chdir=","{0}"]', inputs.working-directory))) || '' }}
+        ${{ inputs.working-directory != '.' && format('-chdir={0}', inputs.working-directory) || '' }}
         validate
         ${{ inputs.json == 'true' && '-json' || '' }}
         ${{ inputs.no-color == 'true' && '-no-color' || '' }}
         ${{ inputs.no-tests == 'true' && '-no-tests' || '' }}
-        ${{ (inputs.test-directory != '' && inputs.no-tests == 'true') && join(fromJSON(format('["-test-directory={0}"]', inputs.test-directory))) || '' }}
+        ${{ (inputs.test-directory != '' && inputs.no-tests == 'true') && format('-test-directory={0}', inputs.test-directory) || '' }}
 ...
