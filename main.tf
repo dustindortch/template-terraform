@@ -5,7 +5,7 @@ locals {
       attr2 = "value2"
     }
     key2 = {
-      attr1 = value3
+      attr1 = "value3"
       attr2 = "value4"
     }
   }
