@@ -17,7 +17,7 @@ runs:
       shell: bash
       run: |
         git clone --depth=1 https://github.com/tfutils/tfenv.git ~/.tfenv
-        sudo ln -s ~/.tfenv/bin/* /usr/local/bin
+        sudo ln -sf ~/.tfenv/bin/* /usr/local/bin
 
     - name: Tfenv Version
       id: tfenv_version
