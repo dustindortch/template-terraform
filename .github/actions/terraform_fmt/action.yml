@@ -41,12 +41,12 @@ runs:
       shell: bash
       run: >
         terraform
-        ${{ inputs.working-directory != '.' && join(fromJSON(format('["-chdir=","{0}"]', inputs.working-directory))) }}
+        ${{ inputs.working-directory != '.' && join(fromJSON(format('["-chdir=","{0}"]', inputs.working-directory))) || '' }}
         fmt
-        ${{ inputs.check == 'true' && '-check' }}
-        ${{ inputs.diff == 'true' && '-diff' }}
-        ${{ inputs.no-color == 'true' && '-no-color' }}
-        ${{ inputs.recursive == 'true' && '-recursive' }}
+        ${{ inputs.check == 'true' && '-check' || '' }}
+        ${{ inputs.diff == 'true' && '-diff' || '' }}
+        ${{ inputs.no-color == 'true' && '-no-color' || '' }}
+        ${{ inputs.recursive == 'true' && '-recursive' || '' }}
         -list=${{ inputs.list == 'true' && true || false }}
         -write=${{ inputs.write == 'true' && true || false }}
 ...
