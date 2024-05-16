@@ -17,7 +17,7 @@ runs:
       shell: bash
       run: |
         git clone --depth=1 https://github.com/tfutils/tfenv.git ~/.tfenv
-        sudo ln -sf ~/.tfenv/bin/terraform /usr/local/bin/terraform
+        sudo ln -sf ~/.tfenv/bin/tfenv /usr/local/bin/tfenv
 
     - name: Tfenv Version
       id: tfenv_version
