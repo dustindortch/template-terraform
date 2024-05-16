@@ -24,15 +24,13 @@ jobs:
         id: pr_number
         shell: bash
         run: |
-          PR_NUMBER=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')"
+          PR_NUMBER=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
           echo "PR_NUMBER: ${PR_NUMBER}"
           echo "PR_NUMBER=${PR_NUMBER}" >> $GITHUB_OUTPUT
 
       - name: Terraform Install
         id: terraform_install
         uses: dustindortch/terraform-rootmodule-template/.github/actions/terraform_install@main
-        with:
-          terraform_version: 1.8.3
 
       - name: Terraform Version
         id: terraform_version
