@@ -32,6 +32,12 @@ jobs:
         id: terraform_install
         uses: dustindortch/terraform-rootmodule-template/.github/actions/terraform_install@main
 
+      - name: Terraform Init
+        id: terraform_init
+        shell: bash
+        run: |
+          terraform init
+
       - name: Terraform Format
         id: terraform_fmt
         uses: dustindortch/terraform-rootmodule-template/.github/actions/terraform_fmt@main
@@ -44,5 +50,15 @@ jobs:
         id: terraform_plan
         uses: dustindortch/terraform-rootmodule-template/.github/actions/terraform_plan@main
         with:
-          output-file: "tfplan"
+          github_token: ${{ github.token }}
+          json: 'true'
+          output-file: 'tfplan'
+          pr-id: ${{ steps.pr_number.outputs.PR_NUMBER }}
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: tfplan
+          path: tfplan*
+
 ...

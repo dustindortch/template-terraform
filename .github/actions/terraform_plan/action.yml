@@ -19,6 +19,9 @@ inputs:
     default: 'false'
     description: 'Select the "destroy" planning mode, which creates a plan to destroy all objects currently managed by this Terraform configuration instead of the usual behavior.'
     required: false
+  github_token:
+    description: 'The GitHub token to use for commenting on the pull request'
+    required: true
   json:
     default: 'false'
     description: 'Display diffs of formatting changes. Also generate a JSON plan file.'
@@ -38,6 +41,10 @@ inputs:
   parallelism:
     default: '10'
     description: 'Limit the number of concurrent operations. Defaults to 10.'
+    required: false
+  pr-id:
+    default: 'false'
+    description: 'The pull request number'
     required: false
   refresh:
     default: 'true'
@@ -77,9 +84,33 @@ runs:
         ${{ (inputs.test-directory != '' && inputs.no-tests == 'true') && join(fromJSON(format('["-test-directory={0}"]', inputs.test-directory))) || '' }}
 
     - name: JSON Artifact
-      if: ${{ inputs.json = 'true' }}
       id: json_artifact
+      if: ${{ inputs.json = 'true' && inputs.output-file != ''}}
       shell: bash
       run: |
         terraform show -json tfplan > ${{ inputs.output-file }}.json
+
+    - name: Plan Output
+      id: plan_output
+      shell: bash
+      run: |
+        PLAN=$(terraform show tfplan) >> $GITHUB_OUTPUT
+
+    - name: Plan Comment
+      id: plan_comment
+      if: ${{ inputs.pr-id != 'false' && inputs.output-file != ''}}
+      uses: peter-evans/create-or-update-comment@v4
+      with:
+        token: ${{ inputs.github_token}}
+        issue-number: ${{ inputs.pr-id }}
+        body: |
+          # Terraform Plan
+
+          ## Pull Request ID: ${{ inputs.pr-id }}
+
+          ```bash
+          ${{ steps.plan_output.outputs.PLAN }}
+          ```
+
+          Plan saved to GH artifacts as [${{ inputs.output-file }}]
 ...
