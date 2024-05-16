@@ -40,9 +40,7 @@ jobs:
         id: terraform_validate
         uses: dustindortch/terraform-rootmodule-template/.github/actions/terraform_validate@main
 
-      - name: Terraform Version
-        id: terraform_version
-        shell: bash
-        run: |
-          echo $TERRAFORM_VERSION
+      - name: Terraform Plan
+        id: terraform_plan
+        uses: dustindortch/terraform-rootmodule-template/.github/actions/terraform_plan@main
 ...

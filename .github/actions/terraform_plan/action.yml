@@ -1,0 +1,78 @@
+---
+author: Dustin Dortch
+name: Terraform Plan
+description: Perform Terraform plan operation
+
+inputs:
+  compact-warnings:
+    default: 'false'
+    description: 'If Terraform produces any warnings that are not accompanied by errors, shows them in a more compact form that includes only the summary messages.'
+    required: false
+  detailed-exitcode:
+    default: 'false'
+    description: 'Return detailed exit codes when the command exits. This will change the meaning of exit codes to:
+      0 - Succeeded, diff is empty (no changes)
+      1 - Errored
+      2 - Succeeded, there is a diff'
+    required: false
+  destroy:
+    default: 'false'
+    description: 'Select the "destroy" planning mode, which creates a plan to destroy all objects currently managed by this Terraform configuration instead of the usual behavior.'
+    required: false
+  json:
+    default: 'false'
+    description: 'Display diffs of formatting changes'
+    required: false
+  no-color:
+    default: 'true'
+    description: 'Disables color in output'
+    required: false
+  no-tests:
+    default: 'true'
+    description: 'Terraform will not validate test files'
+    required: false
+  output-file:
+    default: ''
+    description: 'Write the generated execution plan to the given file. This can be used as an input to the "apply" command.'
+    required: false
+  parallelism:
+    default: '10'
+    description: 'Limit the number of concurrent operations. Defaults to 10.'
+    required: false
+  refresh:
+    default: 'true'
+    description: 'When false, skip checking for external changes to remote objects while creating the plan. This can potentially make planning faster, but at the expense of possibly planning against a stale record of the remote system state.'
+    required: false
+  refresh-only:
+    default: 'false'
+    description: 'Select the "refresh only" planning mode, which checks whether remote objects still match the outcome of the most recent Terraform apply but does not propose any actions to undo any changes made outside of Terraform.'
+    required: false
+  test-directory:
+    default: 'tests'
+    description: 'Set the Terraform test directory, defaults to "tests".'
+    required: false
+  working-directory:
+    default: '.'
+    description: 'The directory to run Terraform commands in'
+    required: false
+
+runs:
+  using: composite
+  steps:
+    - name: Terraform Plan
+      id: terraform_plan
+      shell: bash
+      run: >
+        terraform
+        -input=false
+        ${{ inputs.working-directory != '.' && join(fromJSON(format('["-chdir=","{0}"]', inputs.working-directory))) || '' }}
+        plan
+        ${{ inputs.compact-warnings == 'true' && '-compact-warnings' || '' }}
+        ${{ inputs.detailed-exitcode == 'true' && '-detailed-exitcode' || '' }}
+        ${{ inputs.json == 'true' && '-json' || '' }}
+        ${{ inputs.no-color == 'true' && '-no-color' || '' }}
+        ${{ inputs.no-tests == 'true' && '-no-tests' || '' }}
+        ${{ inputs.output-file != '' && join(fromJSON(format('["-out=","{0}"]', inputs.output-file))) || '' }}
+        -parallelism=${{ inputs.parallelism }}
+        ${{ (inputs.test-directory != '' && inputs.no-tests == 'true') && join(fromJSON(format('["-test-directory={0}"]', inputs.test-directory))) || '' }}
+...
