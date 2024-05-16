@@ -43,4 +43,6 @@ jobs:
       - name: Terraform Plan
         id: terraform_plan
         uses: dustindortch/terraform-rootmodule-template/.github/actions/terraform_plan@main
+        with:
+          output-file: "tfplan"
 ...

@@ -21,7 +21,7 @@ inputs:
     required: false
   json:
     default: 'false'
-    description: 'Display diffs of formatting changes'
+    description: 'Display diffs of formatting changes. Also generate a JSON plan file.'
     required: false
   no-color:
     default: 'true'
@@ -75,4 +75,11 @@ runs:
         ${{ inputs.output-file != '' && join(fromJSON(format('["-out=","{0}"]', inputs.output-file))) || '' }}
         -parallelism=${{ inputs.parallelism }}
         ${{ (inputs.test-directory != '' && inputs.no-tests == 'true') && join(fromJSON(format('["-test-directory={0}"]', inputs.test-directory))) || '' }}
+
+    - name: JSON Artifact
+      if: ${{ inputs.json = 'true' }}
+      id: json_artifact
+      shell: bash
+      run: |
+        terraform show -json tfplan > ${{ inputs.output-file }}.json
 ...
