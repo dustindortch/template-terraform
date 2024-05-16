@@ -85,7 +85,7 @@ runs:
 
     - name: JSON Artifact
       id: json_artifact
-      if: ${{ inputs.json = 'true' && inputs.output-file != ''}}
+      if: inputs.json == 'true' && inputs.output-file != ''
       shell: bash
       run: |
         terraform show -json tfplan > ${{ inputs.output-file }}.json
@@ -98,7 +98,7 @@ runs:
 
     - name: Plan Comment
       id: plan_comment
-      if: ${{ inputs.pr-id != 'false' && inputs.output-file != ''}}
+      if: inputs.pr-id != 'false' && inputs.output-file != ''
       uses: peter-evans/create-or-update-comment@v4
       with:
         token: ${{ inputs.github_token}}
