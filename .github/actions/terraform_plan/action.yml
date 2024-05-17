@@ -1,7 +1,7 @@
 ---
 author: Dustin Dortch
 name: Terraform Plan
-description: Perform Terraform plan operation
+description: Perform `terraform plan` operation
 
 inputs:
   compact-warnings:
@@ -90,7 +90,7 @@ runs:
 
     - name: Plan Comment
       id: plan_comment
-      if: inputs.pr-id != 'false' && inputs.output-file != ''
+      if: inputs.pr-id != 'false'
       shell: bash
       run: |
         BODY="${{ steps.terraform_plan.outputs.PLAN }}"
