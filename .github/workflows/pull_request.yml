@@ -63,7 +63,7 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: plan
-          path: '*'
+          name: tfplan
+          path: tfplan*
 
 ...
