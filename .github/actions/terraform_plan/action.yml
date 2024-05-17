@@ -63,7 +63,7 @@ runs:
       shell: bash
       run: >
         echo 'PLAN<<EOF' >> $GITHUB_OUTPUT;
-        echo '```bash' >> $GITHUB_OUTPUT;
+        echo '\\\`\\\`\\\`bash' >> $GITHUB_OUTPUT;
         terraform
         ${{ inputs.working-directory != '.' && format('-chdir={0}', inputs.working-directory) || '' }}
         plan -input=false
@@ -72,7 +72,7 @@ runs:
         ${{ inputs.no-color == 'true' && '-no-color' || '' }}
         ${{ inputs.output-file != '' && format('-out={0}', inputs.output-file) || '' }}
         -parallelism=${{ inputs.parallelism }} >> $GITHUB_OUTPUT;
-        echo '```' >> $GITHUB_OUTPUT;
+        echo '\\\`\\\`\\\`' >> $GITHUB_OUTPUT;
         echo 'EOF' >> $GITHUB_OUTPUT
 
     - name: JSON Artifact
