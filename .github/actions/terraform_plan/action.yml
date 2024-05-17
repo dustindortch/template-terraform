@@ -62,14 +62,16 @@ runs:
       id: terraform_plan
       shell: bash
       run: >
-        echo "PLAN=$(terraform
+        echo 'PLAN<<EOF' >> $GITHUB_OUTPUT;
+        terraform
         ${{ inputs.working-directory != '.' && format('-chdir={0}', inputs.working-directory) || '' }}
         plan -input=false
         ${{ inputs.compact-warnings == 'true' && '-compact-warnings' || '' }}
         ${{ inputs.detailed-exitcode == 'true' && '-detailed-exitcode' || '' }}
         ${{ inputs.no-color == 'true' && '-no-color' || '' }}
         ${{ inputs.output-file != '' && format('-out={0}', inputs.output-file) || '' }}
-        -parallelism=${{ inputs.parallelism }})" >> $GITHUB_OUTPUT
+        -parallelism=${{ inputs.parallelism }})';
+        echo 'EOF' >> $GITHUB_OUTPUT
 
     - name: JSON Artifact
       id: json_artifact
