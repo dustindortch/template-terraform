@@ -46,7 +46,6 @@ jobs:
         uses: dustindortch/template-terraform/.github/actions/terraform_apply@main
         with:
           github_token: ${{ github.token }}
-          json: 'true'
           plan-file: 'tfplan'
           pr-id: ${{ steps.pr_number.outputs.PR_NUMBER }}
 
