@@ -70,7 +70,7 @@ runs:
         ${{ inputs.detailed-exitcode == 'true' && '-detailed-exitcode' || '' }}
         ${{ inputs.no-color == 'true' && '-no-color' || '' }}
         ${{ inputs.output-file != '' && format('-out={0}', inputs.output-file) || '' }}
-        -parallelism=${{ inputs.parallelism }})';
+        -parallelism=${{ inputs.parallelism }}';
         echo 'EOF' >> $GITHUB_OUTPUT
 
     - name: JSON Artifact
