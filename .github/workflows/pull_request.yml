@@ -22,7 +22,7 @@ permissions:
 jobs:
   terraform_plan:
     runs-on: ubuntu-latest
-    # if: github.event.repository.name != 'terraform-rootmodule-template' && github.event.review.state != 'approved'
+    # if: github.event.repository.name != 'template-terraform' && github.event.review.state != 'approved'
     steps:
       - uses: actions/checkout@v4
 
@@ -31,12 +31,11 @@ jobs:
         shell: bash
         run: |
           PR_NUMBER=$(echo $GITHUB_REF | awk 'BEGIN { FS = "/" } ; { print $3 }')
-          echo "PR_NUMBER: ${PR_NUMBER}"
           echo "PR_NUMBER=${PR_NUMBER}" >> $GITHUB_OUTPUT
 
       - name: Terraform Install
         id: terraform_install
-        uses: dustindortch/terraform-rootmodule-template/.github/actions/terraform_install@main
+        uses: dustindortch/template-terraform/.github/actions/terraform_install@main
 
       - name: Terraform Init
         id: terraform_init
@@ -46,15 +45,15 @@ jobs:
 
       - name: Terraform Format
         id: terraform_fmt
-        uses: dustindortch/terraform-rootmodule-template/.github/actions/terraform_fmt@main
+        uses: dustindortch/template-terraform/.github/actions/terraform_fmt@main
 
       - name: Terraform Validate
         id: terraform_validate
-        uses: dustindortch/terraform-rootmodule-template/.github/actions/terraform_validate@main
+        uses: dustindortch/template-terraform/.github/actions/terraform_validate@main
 
       - name: Terraform Plan
         id: terraform_plan
-        uses: dustindortch/terraform-rootmodule-template/.github/actions/terraform_plan@main
+        uses: dustindortch/template-terraform/.github/actions/terraform_plan@main
         with:
           github_token: ${{ github.token }}
           json: 'true'

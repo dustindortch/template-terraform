@@ -1,8 +1,16 @@
-# terraform-rootmodule-template
+# template-terraform
 
 This repository is a template for creating new Terraform root modules.  It includes the basic files and workflows for GitHub Actions that would be necessary for a new Terraform root module.
 
-Files:
+## Usage
+
+Clone the repository to your target location and update this README file with the appropriate information for your new code.
+
+```bash
+git clone git@github.com:dustindortch/template-terraform.git <new-repo-name>
+```
+
+## Files
 
 - `README.md`: Repository README file.
 - `main.tf`: The main Terraform configuration file.
