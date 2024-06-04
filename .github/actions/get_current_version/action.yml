@@ -1,0 +1,40 @@
+---
+author: Dustin Dortch
+name: Get Current Version
+description: Get the current version from the latest git tag
+
+outputs:
+  major:
+    description: The current major version from the latest git tag
+    value: ${{ steps.git-tags.outputs.major }}
+  minor:
+    description: The current minor version from the latest git tag
+    value: ${{ steps.git-tags.outputs.minor }}
+  patch:
+    description: The current patch version from the latest git tag
+    value: ${{ steps.git-tags.outputs.patch }}
+  prerelease:
+    description: The current prerelease version from the latest git tag
+    value: ${{ steps.git-tags.outputs.prerelease }}
+
+runs:
+  using: composite
+  steps:
+    - name: Get git tags
+      id: git-tags
+      shell: bash
+      run: |
+        INITIAL_VERSION="v0.1.0"
+        TAG=$(git describe --tags ${{ github.sha }} 2>/dev/null || echo "")
+        TAG_COUNT=$(echo $TAG | wc -w)
+        if [ "$TAG_COUNT" -eq 0 ] ; then
+          TAG=$INITIAL_VERSION
+        fi
+        RELEASE_VERSION="${TAG//v}"
+        IFS='-' read -r BASE_VERSION PRERELEASE <<< "${RELEASE_VERSION}"
+        IFS='.' read -r MAJOR MINOR PATCH <<< "${BASE_VERSION}"
+        echo "major=${MAJOR}" >> $GITHUB_OUTPUT
+        echo "minor=${MINOR}" >> $GITHUB_OUTPUT
+        echo "patch=${PATCH}" >> $GITHUB_OUTPUT
+        echo "prerelease=${PRERELEASE//rc}" >> $GITHUB_OUTPUT
+...
