@@ -1,0 +1,84 @@
+---
+author: Dustin Dortch
+name: Revise version
+description: Increment the version based on the pull request labels
+
+inputs:
+  current-major:
+    description: 'The current major version'
+    required: true
+  current-minor:
+    description: 'The current minor version'
+    required: true
+  current-patch:
+    description: 'The current patch version'
+    required: true
+  current-prerelease:
+    description: 'The current prerelease version'
+    required: true
+  major-label:
+    default: 'major'
+    description: 'The label for the major version'
+    required: false
+  minor-label:
+    default: 'minor'
+    description: 'The label for the minor version'
+    required: false
+  patch-label:
+    default: 'patch'
+    description: 'The label for the patch version'
+    required: false
+  alpha-label:
+    default: 'alpha'
+    description: 'The label for a alpha release'
+    required: false
+  beta-label:
+    default: 'beta'
+    description: 'The label for a beta release'
+    required: false
+  rc-label:
+    default: 'rc'
+    description: 'The label for a release candidate release'
+    required: false
+
+runs:
+  using: composite
+  steps:
+    - name: Reject without labels
+      id: reject_wo_labels
+      shell: bash
+      run: |
+        for label in ${{ github.event.pull_request.labels.*.name }}; do
+          case $label in 
+            ${{ inputs.major-label }})
+              ${{ inputs.current-major }}++
+              break
+              ;;
+            ${{ inputs.minor-label }})
+              ${{ inputs.current-minor }}++
+              break
+              ;;
+            ${{ inputs.patch-label }})
+              ${{ inputs.current-patch }}++
+              break
+              ;;
+            ${{ inputs.alpha-label }} | ${{ inputs.beta-label }} )
+              DATE=$(date +%Y%m%d)
+              if [[ ${{ inputs.current-prerelease }} == rc* ]]; then
+                
+              else
+                ${{ inputs.current-prerelease }}${DATE}
+              fi
+              break
+              ;;
+            ${{ inputs.no-release-label }})
+              break
+              ;;
+          esac
+        done
+
+        if [ $EXIT_CODE -ne 0 ]; then
+          echo "A major, minor, patch, pre-release, or no-release pull request label is required to merge to main."
+        fi
+        exit $EXIT_CODE
+...
