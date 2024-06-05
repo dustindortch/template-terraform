@@ -21,8 +21,7 @@ jobs:
         shell: bash
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    # if: github.event.repository.name != 'template-terraform'
-    # if: github.event.repository.name != 'template-terraform' && github.event.merged == true
+
     steps:
       - uses: actions/checkout@v4
 
