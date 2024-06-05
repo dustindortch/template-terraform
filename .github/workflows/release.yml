@@ -30,6 +30,11 @@ jobs:
         id: next-version
         uses: dustindortch/gha-generate-semver@v1
 
+      - name: Set git config
+        run: |
+          git config --global user.email "$(git --no-pager log --format=format:'%an' -n 1)"
+          git config --global user.email "$(git --no-pager log --format=format:'%ae' -n 1)"
+
       - name: Tag release
         run: |
           git tag -a ${{ steps.next-version.outputs.new-version }} -m "Release ${{ steps.next-version.outputs.new-version }}"
