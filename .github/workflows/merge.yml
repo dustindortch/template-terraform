@@ -28,7 +28,7 @@ jobs:
 
       - name: Get next version
         id: next_version
-        uses: AlexAtkinson/github-action-gitops-autover
+        uses: AlexAtkinson/github-action-gitops-autover@0.3.1
 
       - name: Verify outputs
         run: |
