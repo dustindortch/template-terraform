@@ -1,5 +1,5 @@
 ---
-name: Merge to main
+name: Release
 
 on:
   # pull_request:
@@ -14,7 +14,7 @@ permissions:
   pull-requests: write
 
 jobs:
-  tag_and_cherry_pick:
+  return-version:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -27,11 +27,11 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Get next version
-        id: next_version
-        uses: AlexAtkinson/github-action-gitops-autover@0.3.1
+        id: next-version
+        uses: dustindortch/gha-generate-semver@v1
 
       - name: Verify outputs
         run: |
-          echo "New version: ${{ steps.next_version.outputs.new-version }}"
-          echo "Previous version: ${{ steps.next_version.outputs.previous-version }}"
+          echo "New version: ${{ steps.next-version.outputs.new-version }}"
+          echo "Previous version: ${{ steps.next-version.outputs.previous-version }}"
 ...
