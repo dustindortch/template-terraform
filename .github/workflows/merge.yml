@@ -2,9 +2,9 @@
 name: Merge to main
 
 on:
-  pull_request:
-    types:
-      - closed
+  # pull_request:
+  #   types:
+  #     - closed
   workflow_dispatch:
 
 permissions:
@@ -19,15 +19,19 @@ jobs:
     defaults:
       run:
         shell: bash
-    if: github.event.repository.name != 'template-terraform' && github.event.merged == true
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    # if: github.event.repository.name != 'template-terraform'
+    # if: github.event.repository.name != 'template-terraform' && github.event.merged == true
     steps:
-      - name: Reject without labels
-        id: reject_wo_labels
-        uses: dustindortch/template-terraform/.github/actions/check_labels@main
-
       - uses: actions/checkout@v4
 
-      - name: Get current version
-        id: get_current_version
-        uses: dustindortch/template-terraform/.github/actions/get_current_version@main
+      - name: Get next version
+        id: next_version
+        uses: AlexAtkinson/github-action-gitops-autover
+
+      - name: Verify outputs
+        run: |
+          echo "New version: ${{ steps.next_version.outputs.new-version }}"
+          echo "Previous version: ${{ steps.next_version.outputs.previous-version }}"
 ...
