@@ -38,8 +38,8 @@ jobs:
           git tag -a ${{ steps.next-version.outputs.new-version }} -m "Release ${{ steps.next-version.outputs.new-version }}"
           git push --mirror
 
-      - name: Verify outputs
-        run: |
-          echo "New version: ${{ steps.next-version.outputs.new-version }}"
-          echo "Previous version: ${{ steps.next-version.outputs.previous-version }}"
+      - name: Cherry-pick release
+        uses: dustindortch/gha-cherry-pick-release-branch@v1
+        with:
+          tag: ${{ steps.next-version.outputs.new-version }}
 ...
