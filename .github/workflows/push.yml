@@ -34,8 +34,7 @@ jobs:
 
       - name: Terraform Init
         id: terraform_init
-        shell: bash
-        run: terraform init
+        uses: dustindortch/template-terraform/.github/actions/terraform_init@main
 
       - name: Terraform Validate
         id: terraform_validate
@@ -44,8 +43,4 @@ jobs:
       - name: Terraform Format
         id: terraform_fmt
         uses: dustindortch/template-terraform/.github/actions/terraform_fmt@main
-
-      # - name: Terraform Test
-      #   id: terraform_test
-      #   uses: dustindortch/template-terraform/.github/actions/terraform_test@main
 ...
