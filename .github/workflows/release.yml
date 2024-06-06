@@ -30,13 +30,15 @@ jobs:
         uses: dustindortch/gha-generate-semver@v1
 
       - name: Tag release
+        id: tag-release
         run: |
-          git config --global user.name "$(git --no-pager log --format=format:'%an' -n 1)"
-          git config --global user.name
-          git config --global user.email "$(git --no-pager log --format=format:'%ae' -n 1)"
-          git config --global user.email
-          git tag -a ${{ steps.next-version.outputs.new-version }} -m "Release ${{ steps.next-version.outputs.new-version }}"
-          git push --mirror
+          release=${{ steps.next-version.outputs.new-version }}
+          username="$(git --no-pager log --format=format:'%an' -n 1)"
+          email=$(git --no-pager log --format=format:'%ae' -n 1)
+          git config --global user.name "${username}"
+          git config --global user.email "${email}"
+          git tag ${release} -m "Release ${release}"
+          git push --tags
 
       - name: Cherry-pick release
         uses: dustindortch/gha-cherry-pick-release-branch@v1
