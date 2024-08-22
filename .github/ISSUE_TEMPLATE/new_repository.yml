@@ -1,0 +1,59 @@
+---
+name: New Terraform Repository from Template
+description: Create a new Terraform repository from a template, including Branch Protection Rules and Issue Templates.
+title: "[New Repo]: "
+labels: ["repo"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Instructions
+
+        1. **Repository Name**: Enter the name of the new repository.  For modules, the repository name should be in the format `terraform-<provider>-<name>`, where <provider> is the name of the principal provider used in the module (use "data" if no providers are used, and <name> is the name assigned to the module).  The same format can be used for non-module repositories, but it is not required.
+        2. **Repository Description**: Enter a brief description of the repository.
+        3. **Repository Options**: Choose options for the repository:
+          - **Public**: Make the repository public.  Unchecked will make the repository private.
+          - **Module (tag-based)**: Repository is for a Terraform module using tag-based [semantic] versioning.
+          - **Module (branch-based)**: Repository is for a Terraform module using branch-based versioning.
+
+        **Helpful Links**
+
+        - [Terraform Documentation](https://www.terraform.io/docs/index.html)
+        - [Release Flow](https://learn.microsoft.com/en-us/devops/develop/how-microsoft-develops-devops)
+        - [Semantic Versioning](https://semver.org/)
+
+  - type: input
+    id: name
+    attributes:
+      label: Repository Name
+      description: Enter the name of the new repository.
+      placeholder: terraform-<provider>-<name>
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Repository Description
+      description: Enter a brief description of the repository.
+      placeholder: Terraform module for managing <resource> in Azure.
+      render: markdown
+      value: |
+        # terraform-<provider>-<name>
+
+        This text should provide a brief overview of the repository's purpose and contents.  This will be displayed on the repository's main page and be "above the fold" for visitors.  If using `terraform-docs`, any changes generated will be appended to this text.
+
+        It is also useful input a digram for the the architecture deployed by the Terraform code.
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: visibility
+    attributes:
+      label: Repository Options
+      description: Select options for the repository.
+      options:
+        - label: Public
+        - label: Module (tag-based)
+        - label: Module (branch-based)
+...

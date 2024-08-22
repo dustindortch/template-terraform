@@ -1,0 +1,16 @@
+---
+blank_issues_enabled: false
+contact_links:
+  - name: Terraform Language Documentation
+    url: https://developer.hashicorp.com/terraform/language
+  - name: Publishing Terraform Modules
+    url: https://developer.hashicorp.com/terraform/registry
+  - name: Terraform Registry
+    url: https://registry.terraform.io
+  - name: Terraform Releases
+    url: https://github.com/hashicorp/terraform/releases
+  - name: Terraform Version Manager
+    url: https://github.com/tfutils/tfenv
+  - name: Terraform Docs
+    url: https://terraform-docs.io
+...
